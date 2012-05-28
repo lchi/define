@@ -10,8 +10,9 @@ class Scraper
       return
     end
 
-    res = JSON.parse(open("http://en.wikipedia.org/w/api.php?action=parse&page=#{URI::encode(page)}" <<
-          "&format=json&prop=text&section=0").read)
+    res = JSON.parse(open("http://en.wikipedia.org/w/api.php?action=parse" <<
+                          "&page=#{URI::encode(page)}" <<
+                          "&format=json&prop=text&section=0").read)
 
     # TODO: handle errors here?
     title = res["parse"]["title"]
@@ -37,8 +38,10 @@ class Scraper
   private
 
   def self.wikiGetPage(subject)
-    res = JSON.parse(open("http://en.wikipedia.org/w/api.php?action=query&list=search&" <<
-          "format=json&srsearch=#{URI::encode(subject)}&srprop=score%7Csnippet&srlimit=10").read)
+    res = JSON.parse(open("http://en.wikipedia.org/w/api.php?action=query" <<
+                          "&list=search&format=json&srsearch=" <<
+                          "#{URI::encode(subject)}&srprop=score%7Csnippet" <<
+                          "&srlimit=10").read)
 
     debug_puts res
 
