@@ -28,6 +28,9 @@ class Scraper
     title.length.times { print "-" }; print "\n"
     puts "#{text}\n\n"
 
+    # TODO: Replace with lang
+    puts "Link: http://en.wikipedia.org/wiki/#{URI::encode(page)}\n\n"
+
     nil
   end
 
