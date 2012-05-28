@@ -41,12 +41,14 @@ ARGV.each do |subject|
   debug_puts "subject is #{subject}"
 
   if $options[:wiki] || $options[:dict]
+    debug_puts "forced lookups"
     Scraper.wikiLookup(subject) if $options[:wiki]
     Scraper.dictLookup(subject) if $options[:dict]
   else
-    if subject.include? " "
-      Scraper.wikiLookup(subject)
-    else
+    Scraper.wikiLookup(subject)
+
+    if not subject.include? " "
+      debug_puts "no dict lookup for multi-word subject"
       Scraper.dictLookup(subject)
     end
   end
