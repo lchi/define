@@ -2,6 +2,8 @@
 
 require 'optparse'
 
+require './scraper'
+
 $options = {}
 def debug_puts(arg)
   puts "DEBUG: #{arg}" if $options[:debug]
@@ -12,6 +14,11 @@ OptionParser.new do |opts|
 
   opts.on("--debug", "Use debugging statements") do |debug|
     $options[:debug] = true
+  end
+
+  opts.on("-a", "--all", "Force lookup in all sources") do |a|
+    $options[:dict] = true
+    $options[:wiki] = true
   end
 
   opts.on("-d", "--dict", "Force lookup in dictionary") do |d|
@@ -28,15 +35,19 @@ end.parse!
 
 debug_puts "Options: #{$options}"
 
-class Scraper
-  def self.wikiLookup(subject)
-  end
-
-  def self.dictLookup(word)
-
-  end
-end
+puts "Usage: define [options] subjects" if ARGV.size == 0
 
 ARGV.each do |subject|
   debug_puts "subject is #{subject}"
+
+  if $options[:wiki] || $options[:dict]
+    Scraper.wikiLookup(subject) if $options[:wiki]
+    Scraper.dictLookup(subject) if $options[:dict]
+  else
+    if subject.include? " "
+      Scraper.wikiLookup(subject)
+    else
+      Scraper.dictLookup(subject)
+    end
+  end
 end
